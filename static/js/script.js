@@ -13,32 +13,34 @@ $(document).ready(function () {
 
    $.ajax({url: '/sentiment', success: function (data) {
     // returned data is in string format we have to convert it back into json format
-    var sentiment_data = $.parseJSON(data);
+        var sentiment_data = $.parseJSON(data);
+        // var sentiment_data = data
+        console.log(sentiment_data)
 
-    var ctx = document.getElementById("myBarChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'This week',
-                data: sentiment_data,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            }]
-        },
-        options: {            
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        callback: function(value, index, values) {
-                            return float2dollar(value);
-                        }
-                    }
-                }]                
-            }
-        },
-    });
-}});
+        // var ctx = document.getElementById("myBarChart").getContext('2d');
+        // var myChart = new Chart(ctx, {
+        //     type: 'line',
+        //     data: {
+        //         labels: labels,
+        //         datasets: [{
+        //             label: 'This week',
+        //             data: sentiment_data,
+        //             borderColor: 'rgba(75, 192, 192, 1)',
+        //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        //         }]
+        //     },
+        //     options: {            
+        //         scales: {
+        //             yAxes: [{
+        //                 ticks: {
+        //                     beginAtZero: true,
+        //                     callback: function(value, index, values) {
+        //                         return float2dollar(value);
+        //                     }
+        //                 }
+        //             }]                
+        //         }
+        //     },
+        // });
+    }});
 });

@@ -9,8 +9,9 @@ class Sentiment:
 
     def index():
         data = cloud_watch.index()
-        data = data[:40]
+        data = data[:50]
         data = Sentiment.anl_tweets(data)
+        
         return jsonify(data)
 
     def sentiment_analyzer_scores(text, engl=True):
@@ -22,6 +23,7 @@ class Sentiment:
             trans = translator.translate(text).text
         score = analyser.polarity_scores(trans)
         lb = score['compound']
+        result = []
         if lb >= 0.05:
             return 1
         elif (lb > -0.05) and (lb < 0.05):
@@ -30,18 +32,37 @@ class Sentiment:
             return -1
 
     def anl_tweets(lst, title='Tweets Sentiment', engl=True ):
-        sents = []
+        sents   = []
+        netral  = []
+        negatif = []
+        positif = []
         for tw in lst:
             try:
                 st = Sentiment.sentiment_analyzer_scores(tw, engl)
-                sents.append(st)
+                if st == 1:
+                    positif.append(st)
+                elif st == 0:
+                    netral.append(st)
+                elif st == -1:
+                    negatif.append(st)
             except:
                 sents.append(0)
-        ax = sns.distplot(
-            sents,
-            kde=False,
-            bins=3)
-        ax.set(xlabel='Negative                Neutral                 Positive',
-            ylabel='#Tweets',
-            title="Tweets of @"+title)
-        return sents
+        # ax = sns.distplot(
+        #     sents,
+        #     kde=False,
+        #     bins=3)
+        # ax.set(xlabel='Negative                Neutral                 Positive',
+        #     ylabel='#Tweets',
+        #     title="Tweets of @"+title)
+        data = [
+            {
+                'positif': positif
+            },
+            {
+                'netral': netral
+            },
+            {
+                'negatif': negatif
+            }
+        ]
+        return data
