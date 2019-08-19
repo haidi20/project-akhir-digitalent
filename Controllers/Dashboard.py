@@ -1,7 +1,16 @@
 import tweepy
 import json
+import pandas as pd
 
 class Dashboard:
+    def index():
+        user_id = 'bukalapak'
+        count = 200
+        
+        dt_bukalapak = {"raw": pd.Series(Dashboard.list_tweets(user_id, count, True))}
+        tw_bukalapak = pd.DataFrame(dt_bukalapak)
+        coba = tw_bukalapak['raw'][3]
+        return coba
 
     def api():
         ACCESS_TOKEN = '107282554-vCjzS0Xvdb5h6xnEUYu67mFTUaaUuCPVxCQ2sucd'
@@ -11,18 +20,11 @@ class Dashboard:
         auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
         
-        api = tweepy.API(auth)
-        public_tweets = api.home_timeline()
+        api = tweepy.API(auth)    
+        return api  
 
-        dt_bukalapak = {"raw": pd.Series(list_tweets(user_id, count, True))}
-		tw_bukalapak = pd.DataFrame(dt_bukalapak)
-		tw_bukalapak['raw'][3]
-
-    def show_data():
-		
-
-	def list_tweets(user_id, count, prt=False):
-        tweets = api.user_timeline(
+    def list_tweets(user_id, count, prt=False):
+        tweets = Dashboard.api().user_timeline(
             "@" + user_id, count=count, tweet_mode='extended')
         tw = []
         for t in tweets:
