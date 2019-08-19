@@ -15,7 +15,7 @@ class Dashboard:
         public_tweets = api.home_timeline()
         location = []
         for tweet in public_tweets:
-            location = tweet.user
+            location = tweet.user.location
 
         return location
 
