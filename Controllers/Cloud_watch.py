@@ -3,14 +3,14 @@ import re
 import pandas as pd
 
 from flask import jsonify 
-class Data:
+class Cloud_watch:
     def index():
         tweets = pd.read_csv('./sentiment analysis/data/stream_tweet.csv')
         tweets = tweets['text']
 
         data = []
         for tweet in tweets:
-            data.append(Data.clean_text(tweet))
+            data.append(Cloud_watch.clean_text(tweet))
         
         return data
 

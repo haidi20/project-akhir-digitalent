@@ -10,12 +10,18 @@ from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-from Controllers.Data import Data as data
+from Controllers.Sentiment import Sentiment as sentiment
+from Controllers.Cloud_watch import Cloud_watch as cloud_watch
 
 class Dashboard:
 
-    def index():
-        result = data.index()
+    def sentiment():
+        result = sentiment.index()
+
+        return result
+
+    def word_cloud():
+        result = cloud_watch.index()
         # return result
         result = Dashboard.process_wordcloud(result)
 
