@@ -9,8 +9,8 @@ class Dashboard:
         
         dt_bukalapak = {"raw": pd.Series(Dashboard.list_tweets(user_id, count, True))}
         tw_bukalapak = pd.DataFrame(dt_bukalapak)
-        coba = tw_bukalapak['raw'][3]
-        return coba
+        coba = tw_bukalapak['raw']
+        return coba.to_json()
 
     def api():
         ACCESS_TOKEN = '107282554-vCjzS0Xvdb5h6xnEUYu67mFTUaaUuCPVxCQ2sucd'
