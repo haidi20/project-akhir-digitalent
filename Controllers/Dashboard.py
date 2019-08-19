@@ -13,11 +13,11 @@ class Dashboard:
         
         api = tweepy.API(auth)
         public_tweets = api.home_timeline()
-        location = []
-        for tweet in public_tweets:
-            location = tweet.user
 
-        return location
+        return Dashboard.coba()
+
+    def coba():
+        return 'coba'
 
 
         
