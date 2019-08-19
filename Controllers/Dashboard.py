@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from flask import jsonify
+from flask import jsonify, render_template
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -16,8 +16,10 @@ class Dashboard:
 
     def index():
         result = data.index()
+        # return result
+        result = Dashboard.process_wordcloud(result)
+
         return result
-        # return Dashboard.process_wordcloud(result)
 
     def process_wordcloud(data):
         # get API key from NewsAPI.org
@@ -28,15 +30,15 @@ class Dashboard:
         response = requests.get(url)
 
         # get the data in json format
-        # result = response.json()
+        result = response.json()
         
-        return jsonify(data)
+        # return jsonify(data)
 
         sentences = ""
-        for news in result['articles']:
-            description = news['description']
-            sentences = sentences + " " + description
+        for tweet in data:
+            sentences = sentences + " " + tweet
         # return jsonify(sentences)
+        # retrun sentence.to_json()
 
         words = word_tokenize(sentences)
         # return jsonify(words)

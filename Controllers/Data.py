@@ -12,7 +12,7 @@ class Data:
         for tweet in tweets:
             data.append(Data.clean_text(tweet))
         
-        return jsonify(data)
+        return data
 
     def clean_text(text):
         text = text.translate({ord(i): None for i in '@'})
