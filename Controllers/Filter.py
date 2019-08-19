@@ -24,7 +24,11 @@ class Filter:
         text = re.sub(r"\\", "", text)
         text = re.sub(r"\'", "", text)    
         text = re.sub(r"\"", "", text)
+        text = re.sub(r"https", "", text)
         text = re.sub("com", "", text)
+        text = re.sub('[^a-zA-Z ?*$!]+', '', text)
+        text = re.sub(" \d+", " ", text)
+        text = re.sub(r'[0-9]+', '', text)
         return text
             
         
