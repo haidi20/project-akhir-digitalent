@@ -1,38 +1,57 @@
-import tweepy
+import re
 import json
+import tweepy
+import requests
 import pandas as pd
+import matplotlib.pyplot as plt
+
+from flask import jsonify
+from collections import Counter
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+from Controllers.Filter import Filter as fs
 
 class Dashboard:
+
     def index():
-        user_id = 'bukalapak'
-        count = 200
-        
-        dt_bukalapak = {"raw": pd.Series(Dashboard.list_tweets(user_id, count, True))}
-        tw_bukalapak = pd.DataFrame(dt_bukalapak)
-        coba = tw_bukalapak['raw']
-        return coba.to_json()
+        Dashboard.process_wordcloud()
+        return fs.index()
 
-    def api():
-        ACCESS_TOKEN = '107282554-vCjzS0Xvdb5h6xnEUYu67mFTUaaUuCPVxCQ2sucd'
-        ACCESS_SECRET = 'bt6KXJd6Jfo4qWgoImEZtjiZ7zBk3dF103arwxAUWOljE'
-        CONSUMER_KEY = 'u83fQzGVBzGsWbMYEQ3oAwPL1'
-        CONSUMER_SECRET = 'rqckM2STaYLQ7RvI3JedImh2tKXeeWzuuzImKObSjAAoApbkkE'
-        auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-        auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
-        
-        api = tweepy.API(auth)    
-        return api  
+    def process_wordcloud():
+        # get API key from NewsAPI.org
+        NEWS_API_KEY = "498d86e3c11b4142ad84982f58dba794"
+        url = "https://newsapi.org/v2/top-headlines?country=id&category=technology&apiKey="+NEWS_API_KEY
 
-    def list_tweets(user_id, count, prt=False):
-        tweets = Dashboard.api().user_timeline(
-            "@" + user_id, count=count, tweet_mode='extended')
-        tw = []
-        for t in tweets:
-            tw.append(t.full_text)
-            if prt:
-                print(t.full_text)
-                print()
-        return tw
+        # call the api
+        response = requests.get(url)
+
+        # get the data in json format
+        result = response.json()
+        
+        # return jsonify(result)
+
+        sentences = ""
+        for news in result['articles']:
+            description = news['description']
+            sentences = sentences + " " + description
+        # return jsonify(sentences)
+
+        words = word_tokenize(sentences)
+        # return jsonify(words)
+        stop_words = set(stopwords.words('english'))
+
+        words = [word for word in words if word not in stop_words and len(word) > 3]
+
+        # now, get the words and their frequency
+        words_freq = Counter(words)
+        # return jsonify(words_freq)
+
+        words_json = [{'text': word, 'weight': count} for word, count in words_freq.items()]
+
+        # now convert it into a string format and return it
+        return json.dumps(words_json)
+    
 
 
         
