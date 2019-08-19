@@ -10,15 +10,16 @@ from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-from Controllers.Filter import Filter as fs
+from Controllers.Data import Data as data
 
 class Dashboard:
 
     def index():
-        Dashboard.process_wordcloud()
-        return fs.index()
+        result = data.index()
+        return result
+        # return Dashboard.process_wordcloud(result)
 
-    def process_wordcloud():
+    def process_wordcloud(data):
         # get API key from NewsAPI.org
         NEWS_API_KEY = "498d86e3c11b4142ad84982f58dba794"
         url = "https://newsapi.org/v2/top-headlines?country=id&category=technology&apiKey="+NEWS_API_KEY
@@ -27,9 +28,9 @@ class Dashboard:
         response = requests.get(url)
 
         # get the data in json format
-        result = response.json()
+        # result = response.json()
         
-        # return jsonify(result)
+        return jsonify(data)
 
         sentences = ""
         for news in result['articles']:
