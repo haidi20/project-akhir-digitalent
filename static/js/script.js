@@ -12,35 +12,68 @@ $(document).ready(function () {
    }});
 
    $.ajax({url: '/sentiment', success: function (data) {
-    // returned data is in string format we have to convert it back into json format
-        var sentiment_data = $.parseJSON(data);
-        // var sentiment_data = data
-        console.log(sentiment_data)
-
-        // var ctx = document.getElementById("myBarChart").getContext('2d');
-        // var myChart = new Chart(ctx, {
-        //     type: 'line',
-        //     data: {
-        //         labels: labels,
-        //         datasets: [{
-        //             label: 'This week',
-        //             data: sentiment_data,
-        //             borderColor: 'rgba(75, 192, 192, 1)',
-        //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        //         }]
-        //     },
-        //     options: {            
-        //         scales: {
-        //             yAxes: [{
-        //                 ticks: {
-        //                     beginAtZero: true,
-        //                     callback: function(value, index, values) {
-        //                         return float2dollar(value);
-        //                     }
-        //                 }
-        //             }]                
-        //         }
-        //     },
-        // });
+        // returned data is in string format we have to convert it back into json format
+        // var words_data = $.parseJSON(data);
+        console.log(data)
+        
+        // data = [4, 15, 7];
+        labels =  ["positif", "netral", "negatif"];
+        renderChart(data, labels);
     }});
+
+   
 });
+
+function renderChart(data, labels) {
+    var ctx = document.getElementById("myBarChart").getContext('2d');
+    var mixChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                // {
+                //     type: 'line',
+                //     label: "Revenues",
+                //     data: data,
+                //     borderColor: 'rgba(75, 192, 192, 1)',
+                //     backgroundColor: 'rgba(0, 0, 0, 0)',
+                //     yAxisID: 'revenues',
+                // },
+                {
+                    label: "Clients",
+                    data: data,
+                    borderColor: 'rgba(0, 0, 0, 0)',
+                    backgroundColor: 'rgba(192, 75, 192, 0.5)',
+                    yAxisID: 'clients',
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [
+                    {
+                        id: "revenues",
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Revenues (U$)'
+                          }
+                    },
+                    {
+                        id: "clients",
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Clients'
+                          }
+                    },
+                ]
+            },
+        }
+    });
+}

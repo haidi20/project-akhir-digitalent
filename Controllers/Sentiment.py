@@ -40,29 +40,13 @@ class Sentiment:
             try:
                 st = Sentiment.sentiment_analyzer_scores(tw, engl)
                 if st == 1:
-                    positif.append(st)
+                    positif.append(1)
                 elif st == 0:
-                    netral.append(st)
+                    netral.append(0)
                 elif st == -1:
-                    negatif.append(st)
+                    negatif.append(-1)
             except:
                 sents.append(0)
-        # ax = sns.distplot(
-        #     sents,
-        #     kde=False,
-        #     bins=3)
-        # ax.set(xlabel='Negative                Neutral                 Positive',
-        #     ylabel='#Tweets',
-        #     title="Tweets of @"+title)
-        data = [
-            {
-                'positif': positif
-            },
-            {
-                'netral': netral
-            },
-            {
-                'negatif': negatif
-            }
-        ]
+        data = [len(positif), len(netral), len(negatif)]
+        # data['positif'] = len(data['positif'])
         return data
