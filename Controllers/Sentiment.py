@@ -9,7 +9,7 @@ class Sentiment:
 
     def index():
         data = cloud_watch.index()
-        data = data[:50]
+        data = data[:70]
         data = Sentiment.anl_tweets(data)
         
         return jsonify(data)
